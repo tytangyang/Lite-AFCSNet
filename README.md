@@ -12,17 +12,17 @@ We propose Lite-AFCSNet, an ultra-lightweight asymmetric frequency-aware cross-s
 with only **17.23K parameters and 9.67 MMACs**, outperforming the baseline by 6.09 percentage points. Deployed on an STM32H743 MCU, it processes neural network latency in **329.1 ms (RTF = 0.402)**, enabling real-time on-device inference.
 
 <div align="center">
-  <img src="Figure/pipeline.jpg" width="80%">
+  <img src="Figure/pipeline.jpg" width="50%">
   <p><i>The pipeline of the proposed method.</i></p>
 </div>
 
 <div align="center">
-  <img src="Figure/architecture.jpg" width="80%">
+  <img src="Figure/architecture.jpg" width="100%">
   <p><i>Architecture of Lite-AFCSNet. The upper part shows the overall network, while the lower part illustrates basic blocks.</i></p>
 </div>
 
 <div align="center">
-  <img src="Figure/Cross-Stage Feature Fusion.jpg" width="80%">
+  <img src="Figure/Cross-Stage Feature Fusion.jpg" width="50%">
   <p><i>The proposed pooling-aligned cross-stage fusion module with LC-AFF.</i></p>
 </div>
 
