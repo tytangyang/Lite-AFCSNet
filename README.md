@@ -27,59 +27,96 @@ with only **17.23K parameters and 9.67 MMACs**, outperforming the baseline by 6.
 </div>
 
 ## Repository Structure
-This repository is divided into three parts: the first is model training, the second is DCASE official submission and packaging, and the third is model deployment.
+This repository is divided into three parts: the first is model training, the second is DCASE official submission and inference code, and the third is model deployment.
 ```
 Lite-AFCSNet/
 ├── Train                        ← Model Training Folder
-├── DACSE_T1_submission          ← DCASE official submission and packaging Folder
-└── DACSE_H743_Deployment        ← Model Deployment Folder
+├── DCASE_T1_submission          ← DCASE official submission and packaging Folder
+└── DCASE_H743_Deployment        ← Model Deployment Folder
 ```
 ### Train
 ```
 Train/
 ├── dataset/                        
-│   └── dcase25                   ← 
-├── DCASE2025_Task1               ←
-│   ├── 90055w1k/                 ←
-│   └── st5o8bcr/                 ← 
+│   └── dcase25                   ← DCASE 2025 Task 1 dataset loading and preprocessing
 ├── helpers/
-│   ├── init.                     ←
-│   ├── complexity.py             ←
-│   └── utils.py                  ←
+│   ├── init.py                   ← Random seed initialization for DataLoader workers
+│   ├── complexity.py             ← Model parameter size and MACs calculation
+│   └── utils.py                  ← Feature-level data augmentation utilities
 ├──models/
 │   ├── helpers/
-│   │   └── utils.py              ← 
-│   ├── fusion.py                 ←
-│   ├── multi_device_model.py     ←
-│   └── net.py                    ←
-
-├──get.py                         ←
-├── specaugment.py                ←
-├── train_base.py                 ←
-├── train_device_specific.py      ←
+│   │   └── utils.py              ← Common model utility functions
+│   ├── fusion.py                 ← Lightweight fusion, attention, and AsymDW modules
+│   ├── multi_device_model.py     ← Device-specific model container
+│   └── net.py                    ← Lite-AFCSNet network architecture
+├──outputs/
+│   ├── device_after_kd3/
+│   │   └── multi_device_after_kd.ckpt  ← Trained checkpoint after KD and device-specific fine-tuning
+├──teacher_models/
+│   ├── helpers/
+│   │   └── utils.py              ← Utility functions for teacher models
+│   ├── fusion.py                 ← Fusion modules used by teacher models
+│   ├── multi_device_model.py     ← Multi-device teacher model wrapper
+│   ├── net.py                    ← Teacher model architecture
+│   ├── sys4_multi_device_model.py ← Multi-device wrapper for the teacher
+│   ├── sys4_net.py               ← teacher network architecture
+│   └── sys4_teacher.py           ← teacher model definition and loading
+├──get.py                         ← Getting the splist.csv file in the dataset folder
+├── specaugment.py                ← SpecAugment implementation
+├── train_base.py                 ← Base Lite-AFCSNet training
+├── train_base_kd_sys4.py         ← Knowledge distillation using the teacher
+├── train_device_specific.py      ← Device-specific fine-tuning
+├── train_device_specific_after_kd.py ← Device-specific fine-tuning after knowledge distillation
+└── verify_sys4_teacher.py         ← Verification and evaluation of the teacher
 ```
-### DACSE_T1_submission
+### DCASE_T1_submission
+```
+DCASE_T1_submission/
+├── DCASE_T1/                        ← Main inference package
+│   ├── ckpts/                       ← Model checkpoint files
+│   │   ├── init.py                  ← Package initialization
+│   │   └── Lite_AFCSNet.ckpt        ← Trained Lite-AFCSNet checkpoint
+│   ├── models/                      ← Model architecture implementation
+│   │   ├── init.py                  ← Package initialization
+│   │   ├── fusion.py                ← Feature fusion and attention modules
+│   │   ├── multi_device_moedl.py    ← Device-specific model container
+│   │   └── net.py                   ← Lite-AFCSNet network definition
+│   ├── resources/                   ← Resources required for evaluation
+│   │   ├── init.py                  ← Package initialization
+│   │   ├── dummy.wav                ← Dummy audio for complexity testing
+│   │   └── test.xls                 ← Development-set test split
+│   ├── init.py                      ← Package initialization
+│   └── DCASE_T1_1.py                ← Main inference API 
+├── predictions/                     ← Generated evaluation results
+│   │   ├── complexity.json          ← MACs and parameter statistics
+│   │   ├── model_state_dict.pt      ← Exported model parameters
+│   │   ├── output.xls               ← Scene prediction results
+│   │   └── test_accuacy.json        ← Development-set accuracy
+├── complexity.py                    ← Model complexity calculation utilities
+├── evaluate_submission.py           ← Test and evaluation inference script
+├── setup.py                         ← Package installation configuration
+└── test_complexity                  ← Model complexity verification script
+```
 ### DACSE_H743_Deployment
 ```
-DCASE_H743_Delivery/
-├── README.md                        ← 本文档（使用说明）
-├── firmware/                        ← 板端固件（Keil MDK 工程，二选一烧录）
-│   ├── deploy_h743_64MHz/           ← ① 64MHz 稳定版（HSI 直跑，最保守）
-│   └── deploy_h743_480MHz/          ← ② 480MHz 高性能版（HSE+PLL 超频）
-├── pc_tools/                        ← PC 端工具（Python 脚本 + 测试样本）
-│   ├── dcase_batch_test.py          ←   一键实测 10 类准确率（最常用）
-│   ├── dcase_fetch.py               ←   从 Zenodo 下载官方音频样本
-│   ├── pc_onnx_test.py              ←   PC 端 ONNX 对照实验
-│   ├── dump_logmel.py               ←   板端 DSP 中间结果抓取
-│   ├── check_board_logmel.py        ←   板端 vs PC logmel 一致性检查
-│   ├── compare_logits.py            ←   板端 vs PC 分类概率对比
-│   ├── reset_and_test.py            ←   pyocd 复位 + 单样本测试
-│   ├── send_pcm.py                  ←   手动发送一段音频
-│   ├── check_pcm.py                 ←   样本预处理检查
-│   ├── check_filterbank.py          ←   mel 滤波器组检查
-│   └── dataset/samples/*.wav        ←   10 类测试样本（每类 1 个）
+DCASE_H743_Deployment/
+├── firmware/                        ← On-board firmware (Keil MDK projects)
+│   ├── deploy_h743_64MHz/           ← ① 64 MHz stable version (HSI)
+│   └── deploy_h743_480MHz/          ← ② 480 MHz high-performance version (HSE + PLL)
+├── pc_tools/                        ← PC-side Python tools and test samples
+│   ├── dcase_batch_test.py          ← Batch accuracy test for 10 acoustic scenes
+│   ├── dcase_fetch.py               ← Download official audio samples from Zenodo
+│   ├── pc_onnx_test.py              ← PC-side ONNX inference test
+│   ├── dump_logmel.py               ← Capture intermediate DSP log-Mel features
+│   ├── check_board_logmel.py        ← Compare board and PC log-Mel features
+│   ├── compare_logits.py            ← Compare board and PC prediction outputs
+│   ├── reset_and_test.py            ← Reset board via pyOCD and run a sample test
+│   ├── send_pcm.py                  ← Send a single audio sample to the board
+│   ├── check_pcm.py                 ← Check audio preprocessing
+│   ├── check_filterbank.py          ← Check the Mel filter bank
+│   └── dataset/samples/*.wav        ← Test samples for 10 acoustic scenes
 └── model/
-    └── asc_base_p0_65_int8_qdq.onnx ← int8 量化模型（QDQ 格式）
+    └── asc_base_p0_65_int8_qdq.onnx ← INT8 quantized ONNX model (QDQ format)
 ```
 
 
@@ -118,11 +155,11 @@ You should end up with a directory that contains, among other files, the followi
 7. If you have not used [Weights and Biases](https://wandb.ai/site) for logging before, you can create a free account. On your
 machine, run ```wandb login``` and copy your API key from [this](https://wandb.ai/authorize) link to the command line.
 
-## Training Process
+## Project Process
 
-After training a **general model** in Step 1, you can fine-tune it for specific devices (Step 2).  
+This repository is divided into three parts: the first is model training, the second is DCASE official submission and inference code, and the third is model deployment.
 
-### Full Device-specific Fine-Tuning
+### Model Training
 
 **Step 1:** Train a **general model** on the full training set to maximize cross-device generalization.
 
@@ -149,14 +186,6 @@ A detailed description of the data splits (**train, test, and evaluation sets**)
 This year's training set is limited to a **subset** of the full **development-train split** from the [TAU Urban Acoustic Scenes 2022 Mobile, Development dataset (TAU)](https://zenodo.org/records/6337421). Specifically:
 - The subset aligns with the **25% split from DCASE 2024 Task 1**.
 - **Training on any other part of the TAU dataset (beyond the allowed 25% subset) is strictly prohibited** and will result in **disqualification** from the challenge. The **development-test** split can only be used to **evaluate** the system's performance.
-
-### **Use of External Datasets**
-✅ **Allowed:** Participants may use **any publicly available dataset** to improve their models.  
-🚨 **Requirement:** **All external datasets must be declared to the organizers by May 18, 2025.**  
-
-If you would like to suggest additional external resources, please contact:  
-📩 **Florian Schmid** (florian.schmid@jku.at). 
-
 
 ## Baseline Complexity
 
