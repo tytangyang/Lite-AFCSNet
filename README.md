@@ -22,7 +22,7 @@ with only **17.23K parameters and 9.67 MMACs**, outperforming the baseline by 6.
 </div>
 
 <div align="center">
-  <img src="Figure/Cross-Stage Feature Fusion.jpg" width="10%">
+  <img src="Figure/Cross-Stage Feature Fusion.jpg" width="30%">
   <p><i>The proposed pooling-aligned cross-stage fusion module with LC-AFF.</i></p>
 </div>
 
