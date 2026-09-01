@@ -1,0 +1,11 @@
+scene,expected_class,pred,conf,ok
+airport,0,7,0.3940,X
+bus,1,1,0.9710,OK
+metro,2,1,0.6930,X
+metro_station,3,3,0.4350,OK
+park,4,4,0.3360,OK
+public_square,5,0,0.2120,X
+shopping_mall,6,7,0.5070,X
+street_pedestrian,7,7,0.7370,OK
+street_traffic,8,8,0.9700,OK
+tram,9,9,0.7720,OK
