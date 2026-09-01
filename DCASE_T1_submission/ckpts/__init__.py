@@ -1,1 +1,0 @@
-"""Packaged model checkpoints."""
