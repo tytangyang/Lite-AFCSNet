@@ -4,7 +4,7 @@
 
 ## Quik Link
 
-- **DCASE 2025 Challenge**:[https://dcase.community/challenge2025/task-low-complexity-acoustic-scene-classification-with-device-information](https://dcase.community/challenge2025/task-low-complexity-acoustic-scene-classification-with-device-information)
+- **DCASE 2025 Challenge**:[DCASE 2025 Task1](https://dcase.community/challenge2025/task-low-complexity-acoustic-scene-classification-with-device-information)
 
 ## Overview
 
@@ -241,102 +241,66 @@ pyocd reset -t stm32h743xx
 ```powershell
 python "$Root\pc_tools\dcase_batch_test.py" $COM
 ```
-## **Data Splits**
-
-A detailed description of the data splits (**train, test, and evaluation sets**) is available on the [official task description page](https://dcase.community/challenge2025/).
-
-### **Training Data Restrictions**
-This year's training set is limited to a **subset** of the full **development-train split** from the [TAU Urban Acoustic Scenes 2022 Mobile, Development dataset (TAU)](https://zenodo.org/records/6337421). Specifically:
-- The subset aligns with the **25% split from DCASE 2024 Task 1**.
-- **Training on any other part of the TAU dataset (beyond the allowed 25% subset) is strictly prohibited** and will result in **disqualification** from the challenge. The **development-test** split can only be used to **evaluate** the system's performance.
 
 ## Baseline Complexity
 
-The Baseline system (full fine-tune strategy) has a complexity of 61,148 parameters and 29.42 million MACs. The table below lists how the parameters
-and MACs are distributed across the different layers in the network.
+Lite-AFCSNet has a complexity of 17,231 parameters and 9,670,740 MACs. The table below lists how the parameters and MACs are distributed across the different layers in the network.
 
-**According to the challenge rules the following complexity limits apply**:
-* max memory for model parameters: 128 kB (Kilobyte)
-* max number of MACs for inference of a 1-second audio snippet: 30 million MACs
+| **Description**     | **Layer**                    | **Input Shape** | **Params** |      **MACs** |
+| ------------------- | ---------------------------- | --------------: | ---------: | ------------: |
+| in_c[0]             | ConvBNAct, 3×3               | [1, 1, 256, 65] |         88 |       304,144 |
+| in_c[1]             | ConvBNAct, 3×3               | [1, 8, 128, 33] |      2,368 |     2,506,816 |
+| stage1.b1.block[0]  | Grouped PW Conv              | [1, 32, 64, 17] |        640 |       557,184 |
+| stage1.b1.block[1]  | AsymDW 3×1 + 1×3             | [1, 64, 64, 17] |        512 |       417,920 |
+| stage1.b1.block[2]  | Grouped PW Conv              | [1, 64, 64, 17] |        576 |       557,120 |
+| stage1.b1.fuse_mode | LC-AFF                       | [1, 32, 64, 17] |          3 |            96 |
+| stage1.b2.block[0]  | Grouped PW Conv              | [1, 32, 64, 17] |        640 |       557,184 |
+| stage1.b2.block[1]  | AsymDW 3×1 + 1×3             | [1, 64, 64, 17] |        512 |       417,920 |
+| stage1.b2.block[2]  | Grouped PW Conv              | [1, 64, 64, 17] |        576 |       557,120 |
+| stage1.b2.fuse_mode | LC-AFF                       | [1, 32, 64, 17] |          3 |            96 |
+| stage1.b3.block[0]  | Grouped PW Conv              | [1, 32, 64, 17] |        640 |       557,184 |
+| stage1.b3.block[1]  | AsymDW 3×1 + 1×3, stride 1×2 | [1, 64, 64, 17] |        512 |       319,616 |
+| stage1.b3.block[2]  | Grouped PW Conv              |  [1, 64, 64, 9] |        576 |       294,976 |
+| stage1.b3.fuse_mode | LC-AFF                       |  [1, 32, 64, 9] |          3 |            96 |
+| stage2.b4.block[0]  | Grouped PW Conv              |  [1, 32, 64, 9] |        640 |       295,040 |
+| stage2.b4.block[1]  | AsymDW 5×1 + 1×3, stride 2×1 |  [1, 64, 64, 9] |        640 |       147,584 |
+| stage2.b4.block[2]  | Grouped PW Conv              |  [1, 64, 32, 9] |      1,008 |       258,160 |
+| stage2.b4.fuse_mode | LC-AFF                       |               - |          3 |             - |
+| stage2.b5.block[0]  | Grouped PW Conv              |  [1, 56, 32, 9] |      1,920 |       484,080 |
+| stage2.b5.block[1]  | AsymDW 5×1 + 1×3             | [1, 120, 32, 9] |      1,200 |       276,720 |
+| stage2.b5.block[2]  | Grouped PW Conv              | [1, 120, 32, 9] |      1,792 |       483,952 |
+| stage2.b5.fuse_mode | LC-AFF                       |  [1, 56, 32, 9] |          3 |           168 |
+| stage_pool_alpha    | Learnable Max/Avg Weight     |          scalar |          1 |             - |
+| channel_adjust      | 1×1 Conv                     |  [1, 32, 32, 9] |      1,792 |       516,096 |
+| aff_fusion          | Cross-stage LC-AFF           |  [1, 56, 32, 9] |          3 |           168 |
+| detection_head[0]   | 1×1 Conv                     |  [1, 56, 32, 9] |        560 |       161,280 |
+| detection_head[1]   | BatchNorm2d                  |  [1, 10, 32, 9] |         20 |            20 |
+| detection_head[2]   | AdaptiveAvgPool2d            |  [1, 10, 32, 9] |          - |             - |
+| **Sum**             | -                            |               - | **17,231** | **9,670,740** |
 
-**Model parameters may vary across different devices. As a result, the complexity limits apply individually to each device-specific model, rather than the total sum of all models.**
+## Results
 
-Model parameters of the baseline must be converted to 16-bit precision before inference of the test/evaluation set to stick to the complexity limits (61,148 * 16 bits = 61,148 * 2 B = 122,296 B <= 128 kB).
+The primary evaluation metric for the DCASE 2025 challenge Task 1 is **Macro Average Accuracy** . There are two results table below, DCASE 2025 Task 1 and On-device deployment, respectively.
 
-In previous years of the challenge, top-ranked teams used a technique called **quantization** that converts model paramters to 8-bit precision. In this case,
-the maximum number of allowed parameters would be 128,000.
+### Results on DCASE 2025 Task 1
 
+| Method | Acc. (%) | Params (K) | MACs (M) |
+|---|---:|---:|---:|
+| Baseline  | 50.72 | 61.15 | 29.42 |
+| **MALACH25** | **61.47** | 61.15 | 29.42 |
+| SNTLNTU | 59.94 | 116.34 | 10.90 |
+| DynaCP | 59.58 | 61.65 | 28.94 |
+| CD | 56.63 | 61.15 | 29.42 |
+| SRIB | 56.06 | 61.16 | 27.86 |
+| **Lite-AFCSNet** | 56.81 | **17.23** | **9.67** |
 
-| **Description**       | **Layer**                        | **Input Shape** | **Params** | **MACs**  |
-|-----------------------|----------------------------------|-----------------|------------|-----------|
-| in_c[0]               | Conv2dNormActivation             | [1, 1, 256, 65] | 88         | 304,144   |
-| in_c[1]               | Conv2dNormActivation             | [1, 8, 128, 33] | 2,368      | 2,506,816 |
-| stages[0].b1.block[0] | Conv2dNormActivation (pointwise) | [1, 32, 64, 17] | 2,176      | 2,228,352 |
-| stages[0].b1.block[1] | Conv2dNormActivation (depthwise) | [1, 64, 64, 17] | 704        | 626,816   |
-| stages[0].b1.block[2] | Conv2dNormActivation (pointwise) | [1, 64, 64, 17] | 2,112      | 2,228,288 |
-| stages[0].b2.block[0] | Conv2dNormActivation (pointwise) | [1, 32, 64, 17] | 2,176      | 2,228,352 |
-| stages[0].b2.block[1] | Conv2dNormActivation (depthwise) | [1, 64, 64, 17] | 704        | 626,816   |
-| stages[0].b2.block[2] | Conv2dNormActivation (pointwise) | [1, 64, 64, 17] | 2,112      | 2,228,288 |
-| stages[0].b3.block[0] | Conv2dNormActivation (pointwise) | [1, 32, 64, 17] | 2,176      | 2,228,352 |
-| stages[0].b3.block[1] | Conv2dNormActivation (depthwise) | [1, 64, 64, 17] | 704        | 331,904   |
-| stages[0].b3.block[2] | Conv2dNormActivation (pointwise) | [1, 64, 64, 9]  | 2,112      | 1,179,712 |
-| stages[1].b4.block[0] | Conv2dNormActivation (pointwise) | [1, 32, 64, 9]  | 2,176      | 1,179,776 |
-| stages[1].b4.block[1] | Conv2dNormActivation (depthwise) | [1, 64, 64, 9]  | 704        | 166,016   |
-| stages[1].b4.block[2] | Conv2dNormActivation (pointwise) | [1, 64, 32, 9]  | 3,696      | 1,032,304 |
-| stages[1].b5.block[0] | Conv2dNormActivation (pointwise) | [1, 56, 32, 9]  | 6,960      | 1,935,600 |
-| stages[1].b5.block[1] | Conv2dNormActivation (depthwise) | [1, 120, 32, 9] | 1,320      | 311,280   |
-| stages[1].b5.block[2] | Conv2dNormActivation (pointwise) | [1, 120, 32, 9] | 6,832      | 1,935,472 |
-| stages[2].b6.block[0] | Conv2dNormActivation (pointwise) | [1, 56, 32, 9]  | 6,960      | 1,935,600 |
-| stages[2].b6.block[1] | Conv2dNormActivation (depthwise) | [1, 120, 32, 9] | 1,320      | 311,280   |
-| stages[2].b6.block[2] | Conv2dNormActivation (pointwise) | [1, 120, 32, 9] | 12,688     | 3,594,448 |
-| ff_list[0]            | Conv2d                           | [1, 104, 32, 9] | 1,040      | 299,520   |
-| ff_list[1]            | BatchNorm2d                      | [1, 10, 32, 9]  | 20         | 20        |
-| ff_list[2]            | AdaptiveAvgPool2d                | [1, 10, 32, 9]  | -          | -         |
-| **Sum**               | -                                | -               | **61,148**     | **29,419,156** |
+### On-device Deployment Results
 
-To give an example on how MACs and parameters are calculated, let's look in detail into the module **stages[0].b3.block[1]**.
-It consists of a conv2d, a batch norm, and a ReLU activation function. 
-
-**Parameters**: The conv2d Parameters are calculated as *input_channels * output_channels * kernel_size * kernel_size*, resulting in 
-1 * 64 * 3 * 3 = 576 parametes. Note that *input_channels=1* since it is a depth-wise convolution with 64 groups. The batch norm adds 64 * 2 = 128 parameters
-on top, resulting in a total of 704 parameters for this *Conv2dNormActivation* module.
-
-**MACs**: The MACs of the conv2d are calculated as *input_channels * output_channels * kernel_size * kernel_size * output_frequency_bands * output_time_frames*, resulting in 1 * 64 * 3 * 3 * 64 * 9 = 331,776 MACs.   
-Note that *input_channels=1* since it is a depth-wise convolution with 64 groups. The batch norm adds 128 MACs
-on top, resulting in a total of 331,904 MACs for this *Conv2dNormActivation* module.
-
-## Baseline Results
-
-The primary evaluation metric for the DCASE 2024 challenge Task 1 is **Macro Average Accuracy** (class-wise averaged accuracy).
-
-The two tables below list the Macro Average Accuracy, class-wise accuracies and device-wise accuracies for the general model (Step 1), and the fine-tuned device-specific models (Step 2). The results are averaged over 4 runs.
-You should obtain similar results when running the baseline system. 
-
-
-
-### Class-wise results
-
-| **Model**              | **Airport** | **Bus** | **Metro** | **Metro Station** | **Park** | **Public Square** | **Shopping Mall** | **Street Pedestrian** | **Street Traffic** | **Tram** | **Macro Avg. Accuracy** |
-|------------------------|------------:|--------:|----------:|------------------:|---------:|------------------:|------------------:|----------------------:|-------------------:|---------:|:-----------------------:|
-| General Model          |       38.94 |   62.28 |     40.60 |             50.72 |    72.03 |             29.20 |             56.04 |                 34.76 |             73.21  |    49.42 |      50.72 ± 0.47       |
-| Device-specific Models |       44.43 |   64.81 |     43.87 |             48.22 |    72.75 |             32.04 |             53.14 |                 34.43 |             74.10  |    51.08 |    **51.89 ± 0.05**     |
-
-
-### Device-wise results
-
-| **Model**              | **A** | **B** | **C**     | **S1**    | **S2** | **S3**    | **S4**    | **S5** | **S6**    | **Macro Avg. Accuracy** |
-|------------------------|:-----:|:-----:|:---------:|:---------:|:------:|:---------:|:---------:|:------:|:---------:|:-----------------------:|
-| General Model          | 62.80 | 52.87 |  54.23    |  48.52    | 47.29  |  52.86    |  48.14    | 47.23  |  42.60    |      50.72 ± 0.47       |
-| Device-specific Models | 63.98 | 55.85 |  59.09    |  48.68    | 48.74  |  52.72    |  48.14    | 47.23  |  42.60    |    **51.89 ± 0.05**     |
-
-Note that results for devices (`s4`, `s5`, `s6`) are the same for *General Model* and *Device-specific Models*, as the *General Model* is used for unknown devices (devices that are not in the training set).
-
-## Obtain Evaluation Set Predictions
-
-The evaluation set will be released on **June 1st**. Detailed instructions on generating predictions for the evaluation set will be provided alongside its release.
-
-## Inference Code
-
-For this year's challenge, participants must submit inference code for their models. Inference code must be provided in the form of a simple installable python package. The inference package for the baseline system will be soon provided in a separate repository.
-
-
+| Metric | Value |
+|---|---:|
+| Flash | 138.26 KB |
+| Peak RAM | 345.39 KB |
+| DSP Latency | 72.8 ms |
+| NN Latency | 329.1 ms |
+| E2E Latency | 401.9 ms |
+| RTF | 0.402 |
