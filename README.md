@@ -161,22 +161,51 @@ This repository is divided into three parts: the first is model training, the se
 
 ### Model Training
 
-**Step 1:** Train a **general model** on the full training set to maximize cross-device generalization.
+**Step 1:** Train a **general model** after knowledge distillation on the full training set to maximize cross-device generalization.
 
 ```
-python train_base.py
+python train_base_kd_sys4.py \
+  --teacher_ckpt ./sys4.ckpt
 ```
 
 **Step 2:** Load the pre-trained model from **Step 1** and fine-tune for all devices in the training set (`a`, `b`, `c`, `s1`, `s2`, `s3`):
 
 ```
-python train_device_specific.py --ckpt_id=<wandb_id_from_Step_1>
+python train_device_specific_after_kd.py \
+  --base_ckpt=<wandb_id_from_Step_1>
 ```
 
 **How to specify the checkpoint?** Simply pass the Weights & Biases experiment ID (wandb_id_from_Step_1). You can find it in the Weights & Biases online dashboard.
 
 **Hint:** When inspecting **curves** in Weights & Biases, make sure to set the **x-axis to `trainer.global_step`** instead of the default `step`. This ensures that metrics are correctly aligned across different device-specific fine-tuning phases. The default `step` counter is **shared across all phases** because a **single Weights & Biases logger instance is reused**, causing offsets in the plots.
 
+### DCASE official submission and inference code
+
+**Step 1:** final checkpoint from the last device-specific fine-tuning run to: 
+
+```
+DACES_T1/ckpts/Lite_AFCSNet.ckpt
+```
+
+**Step 2:** Complexity check:
+
+```
+python test_complexity.py \
+  --submission_name DACES_T1 \
+  --submission_index 1
+```
+
+**Step 3:** Development and evaluation inference:
+
+```
+python evaluate_submission.py \
+  --submission_name DACES_T1 \
+  --submission_index 1 \
+  --dev_set_dir /path/to/dataset25 \
+  --eval_set_dir /path/to/evaluationset
+```
+
+###  Model Deployment
 
 ## **Data Splits**
 
