@@ -207,6 +207,40 @@ python evaluate_submission.py \
 
 ###  Model Deployment
 
+**Step 1:** Set root, UV4 and COM address
+
+```powershell
+$Root = "C:\Users\ROG\Desktop\DCASE_H743_Deployment"
+$UV4  = "E:\Keil Core\UV4\UV4.exe"
+$COM  = "COM5"
+```
+
+**Step 2:** Select the version to be burned
+
+```powershell
+$Proj = "$Root\firmware\deploy_h743_64MHz\Projects\NUCLEO-H743ZI\Examples\UART\UART_TwoBoards_ComPolling\MDK-ARM\Project.uvprojx"
+$Proj = "$Root\firmware\deploy_h743_480MHz\Projects\NUCLEO-H743ZI\Examples\UART\UART_TwoBoards_ComPolling\MDK-ARM\Project.uvprojx"
+```
+
+**Step 3:** Compile
+```powershell
+& $UV4 -b $Proj -j0 -o "$Root\build.log"
+```
+
+**Step 4:** Flash
+```powershell
+& $UV4 -f $Proj -o "$Root\flash.log"
+```
+
+**Step 5:** Reset
+```powershell
+pyocd reset -t stm32h743xx
+```
+
+**Step 5:** Predict 10 types of samples
+```powershell
+python "$Root\pc_tools\dcase_batch_test.py" $COM
+```
 ## **Data Splits**
 
 A detailed description of the data splits (**train, test, and evaluation sets**) is available on the [official task description page](https://dcase.community/challenge2025/).
