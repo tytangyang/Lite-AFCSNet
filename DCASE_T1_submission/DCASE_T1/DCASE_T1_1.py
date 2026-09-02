@@ -1,5 +1,3 @@
-"""DCASE 2025 Task 1 inference API for the V4 LC-AFF multi-device model."""
-
 from __future__ import annotations
 
 from collections import defaultdict
