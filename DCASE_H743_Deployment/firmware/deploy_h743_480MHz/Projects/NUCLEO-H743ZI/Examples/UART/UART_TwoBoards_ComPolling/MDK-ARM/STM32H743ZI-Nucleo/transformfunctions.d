@@ -1,0 +1,65 @@
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/TransformFunctions.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_bitreversal.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/transform_functions.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/arm_math_types.h
+stm32h743zi-nucleo\transformfunctions.o: ../../../../../../Drivers/CMSIS/Include/cmsis_compiler.h
+stm32h743zi-nucleo\transformfunctions.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\stdint.h
+stm32h743zi-nucleo\transformfunctions.o: ../../../../../../Drivers/CMSIS/Include/cmsis_armcc.h
+stm32h743zi-nucleo\transformfunctions.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\string.h
+stm32h743zi-nucleo\transformfunctions.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\math.h
+stm32h743zi-nucleo\transformfunctions.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\float.h
+stm32h743zi-nucleo\transformfunctions.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\limits.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/arm_math_memory.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/none.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/utils.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/basic_math_functions.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/complex_math_functions.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/fast_math_functions.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/arm_common_tables.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_bitreversal2.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_f64.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_init_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/arm_const_structs.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_init_f64.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_init_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_init_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix2_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix2_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix2_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix4_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix4_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix4_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix8_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_fast_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_fast_f64.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_fast_init_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_fast_init_f64.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_mfcc_init_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_mfcc_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/statistics_functions.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Inc/dsp/matrix_functions.h
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_mfcc_init_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_mfcc_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_mfcc_init_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_mfcc_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_dct4_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_dct4_init_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_dct4_init_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_dct4_init_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_dct4_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_dct4_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_init_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_init_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_rfft_init_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix4_init_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix4_init_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix4_init_q31.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix2_init_f32.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix2_init_q15.c
+stm32h743zi-nucleo\transformfunctions.o: ../cmsis_dsp/Src/arm_cfft_radix2_init_q31.c
