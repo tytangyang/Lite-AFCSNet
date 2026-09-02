@@ -119,9 +119,7 @@ def build_student(config) -> nn.Module:
 def extract_student_state_dict(checkpoint_path: str, model: nn.Module) -> Dict[str, torch.Tensor]:
     """Extract only the distilled general student's model weights.
 
-    Supports Lightning checkpoints from train_base_kd_sys4.py, whose keys are
-    normally prefixed by ``model.``. A shape-aware fallback is included so the
-    loader fails loudly rather than silently loading the wrong architecture.
+    Supports Lightning checkpoints from train_base_kd_sys4.py.
     """
     path = Path(checkpoint_path)
     if not path.is_file():
@@ -574,7 +572,6 @@ def build_parser():
     parser.add_argument("--orig_sample_rate", type=int, default=44100)
     parser.add_argument("--subset", type=int, default=25)
 
-    # Must exactly match the architecture used in the KD run.
     parser.add_argument("--n_classes", type=int, default=10)
     parser.add_argument("--in_channels", type=int, default=1)
     parser.add_argument("--base_channels", type=int, default=32)
@@ -594,7 +591,6 @@ def build_parser():
     parser.add_argument("--large_asym_dw_time", type=int, default=3)
     parser.add_argument("--large_kernel_blocks", type=str, default="b4,b5")
 
-    # Conservative fine-tuning defaults for small per-device subsets.
     parser.add_argument("--n_epochs", type=int, default=30)
     parser.add_argument("--batch_size", type=int, default=128)
     parser.add_argument("--lr", type=float, default=1e-4)
@@ -606,7 +602,6 @@ def build_parser():
     parser.add_argument("--early_stop_min_delta", type=float, default=1e-4)
     parser.add_argument("--roll_sec", type=float, default=0.1)
 
-    # Weaker augmentation than general-model training.
     parser.add_argument("--probabilistic_mixstyle_prob", type=float, default=0.7)
     parser.add_argument("--probabilistic_p", type=float, default=0.2)
     parser.add_argument("--probabilistic_alpha", type=float, default=0.3)
