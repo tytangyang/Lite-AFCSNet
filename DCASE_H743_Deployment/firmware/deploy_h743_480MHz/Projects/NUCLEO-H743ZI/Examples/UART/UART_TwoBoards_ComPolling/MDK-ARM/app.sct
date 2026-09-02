@@ -1,0 +1,28 @@
+; *************************************************************
+; Scatter file for DCASE 音频场景分类部署 (STM32H743ZI)
+;
+; 内存布局:
+;   IROM1   0x08000000   2MB   代码 + 常量 (含模型权重 43.7KB)
+;   AXI SRAM 0x24000000  512KB  AI activation(312KB) + DSP缓冲 + 栈/堆
+;   D2 SRAM  0x30000000  288KB  pcm_frame 音频缓冲 (.PcmFrameD2)
+; *************************************************************
+
+LR_IROM1 0x08000000 0x00200000  {
+  ; 代码与只读数据 -> 内部 Flash
+  ER_IROM1 0x08000000 0x00200000  {
+   *.o (RESET, +First)
+   *(InRoot$$Sections)
+   .ANY (+RO)
+  }
+
+  ; RW/ZI -> AXI SRAM (512KB), D-cache 可缓存 (纯 CPU 访问)
+  RW_AXISRAM 0x24000000 0x00080000  {
+   .ANY (+RW +ZI)
+  }
+
+  ; PCM 音频缓冲 + DSP 大数据 -> D2 SRAM (DMA/CPU 共享, MPU 标记 non-cacheable)
+  RW_D2SRAM 0x30000000 0x00048000  {
+   *(.PcmFrameD2)
+   *(.DspBufD2)
+  }
+}
