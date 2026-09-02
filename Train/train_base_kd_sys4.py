@@ -99,9 +99,6 @@ class PLModule(pl.LightningModule):
         self.config = config
 
         self._validate_teacher_frontend()
-
-        # This frontend exactly matches both the current student training code and
-        # the first-place sys4 training/inference configuration.
         self.mel = nn.Sequential(
             torchaudio.transforms.Resample(
                 orig_freq=config.orig_sample_rate,
@@ -125,7 +122,6 @@ class PLModule(pl.LightningModule):
             total_epochs=config.n_epochs,
         )
 
-        # Current 17.2KB / 9.67MMAC student. Defaults reproduce the uploaded net.py.
         self.model = get_two_stage_model(
             n_classes=config.n_classes,
             in_channels=config.in_channels,
@@ -156,10 +152,6 @@ class PLModule(pl.LightningModule):
             channels_multiplier=1.8,
             expansion_rate=2.1,
         )
-
-        # Deliberately bypass nn.Module registration. Therefore sys4 parameters are
-        # never saved in the student's Lightning checkpoint and do not change the
-        # deployable model size.
         object.__setattr__(self, "_teacher", teacher)
 
         self.validation_step_outputs: List[Dict[str, torch.Tensor]] = []
@@ -490,7 +482,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--orig_sample_rate", type=int, default=44100)
     parser.add_argument("--subset", type=int, default=25)
 
-    # Student model: defaults match the uploaded 17.2KB/9.67MMAC net.py path.
+    # Student model
     parser.add_argument("--n_classes", type=int, default=10)
     parser.add_argument("--in_channels", type=int, default=1)
     parser.add_argument("--base_channels", type=int, default=32)
@@ -524,7 +516,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--probabilistic_lambda_val", type=float, default=0.05)
     parser.add_argument("--probabilistic_phi_val", type=float, default=0.05)
 
-    # Official sys4/student frontend.
+    # sys4/student frontend.
     parser.add_argument("--sample_rate", type=int, default=32000)
     parser.add_argument("--window_length", type=int, default=3072)
     parser.add_argument("--hop_length", type=int, default=500)
