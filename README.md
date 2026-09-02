@@ -206,7 +206,7 @@ python evaluate_submission.py \
 ```
 
 ###  Model Deployment
-
+Using **NUCLEO-H743ZI2** or any STM32H743 board, which requires an on-board/external 25MHz crystal oscillator for the 480MHz version.
 **Step 1:** Set root, UV4 and COM address
 
 ```powershell
@@ -216,7 +216,7 @@ $COM  = "COM5"
 ```
 
 **Step 2:** Select the version to be burned
-
+Recommend using 480MHz
 ```powershell
 $Proj = "$Root\firmware\deploy_h743_64MHz\Projects\NUCLEO-H743ZI\Examples\UART\UART_TwoBoards_ComPolling\MDK-ARM\Project.uvprojx"
 $Proj = "$Root\firmware\deploy_h743_480MHz\Projects\NUCLEO-H743ZI\Examples\UART\UART_TwoBoards_ComPolling\MDK-ARM\Project.uvprojx"
