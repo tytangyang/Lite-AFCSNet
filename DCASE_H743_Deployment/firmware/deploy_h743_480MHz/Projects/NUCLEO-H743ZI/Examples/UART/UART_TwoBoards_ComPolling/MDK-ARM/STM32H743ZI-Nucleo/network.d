@@ -1,0 +1,67 @@
+stm32h743zi-nucleo\network.o: ../Model/network.c
+stm32h743zi-nucleo\network.o: ../Model/network.h
+stm32h743zi-nucleo\network.o: ../Model/network_config.h
+stm32h743zi-nucleo\network.o: ../AI/ai_platform.h
+stm32h743zi-nucleo\network.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\stdint.h
+stm32h743zi-nucleo\network.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\stddef.h
+stm32h743zi-nucleo\network.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\inttypes.h
+stm32h743zi-nucleo\network.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\stdbool.h
+stm32h743zi-nucleo\network.o: ../Model/network_data.h
+stm32h743zi-nucleo\network.o: ../Model/network_data_params.h
+stm32h743zi-nucleo\network.o: ../AI/ai_platform_interface.h
+stm32h743zi-nucleo\network.o: ../AI/datatypes_network.h
+stm32h743zi-nucleo\network.o: ../AI/ai_datatypes.h
+stm32h743zi-nucleo\network.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\string.h
+stm32h743zi-nucleo\network.o: ../AI/ai_platform_interface.h
+stm32h743zi-nucleo\network.o: ../AI/ai_datatypes_defines.h
+stm32h743zi-nucleo\network.o: ../AI/core_assert.h
+stm32h743zi-nucleo\network.o: ../AI/ai_datatypes_format.h
+stm32h743zi-nucleo\network.o: ../AI/formats_list.h
+stm32h743zi-nucleo\network.o: ../AI/stai.h
+stm32h743zi-nucleo\network.o: ../AI/ai_math_helpers.h
+stm32h743zi-nucleo\network.o: ../AI/ai_lite_math_helpers.h
+stm32h743zi-nucleo\network.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\math.h
+stm32h743zi-nucleo\network.o: E:\Keil Core\ARM\ARMCC\Bin\..\include\limits.h
+stm32h743zi-nucleo\network.o: ../AI/core_common.h
+stm32h743zi-nucleo\network.o: ../AI/core_datatypes.h
+stm32h743zi-nucleo\network.o: ../AI/core_convert.h
+stm32h743zi-nucleo\network.o: ../AI/layers.h
+stm32h743zi-nucleo\network.o: ../AI/layers_common.h
+stm32h743zi-nucleo\network.o: ../AI/ai_common_config.h
+stm32h743zi-nucleo\network.o: ../AI/layers_list.h
+stm32h743zi-nucleo\network.o: ../AI/layers_conv2d.h
+stm32h743zi-nucleo\network.o: ../AI/layers_nl.h
+stm32h743zi-nucleo\network.o: ../AI/lite_internal_apis.h
+stm32h743zi-nucleo\network.o: ../AI/ai_lite_interface.h
+stm32h743zi-nucleo\network.o: ../AI/ai_lite.h
+stm32h743zi-nucleo\network.o: ../AI/lite_nl_list.h
+stm32h743zi-nucleo\network.o: ../AI/layers_pool.h
+stm32h743zi-nucleo\network.o: ../AI/lite_maxpool_dqnn.h
+stm32h743zi-nucleo\network.o: ../AI/lite_pool_f32.h
+stm32h743zi-nucleo\network.o: ../AI/layers_custom.h
+stm32h743zi-nucleo\network.o: ../AI/layers_dense.h
+stm32h743zi-nucleo\network.o: ../AI/layers_formats_converters.h
+stm32h743zi-nucleo\network.o: ../AI/layers_generic.h
+stm32h743zi-nucleo\network.o: ../AI/layers_lite_graph.h
+stm32h743zi-nucleo\network.o: ../AI/layers_norm.h
+stm32h743zi-nucleo\network.o: ../AI/layers_pad_dqnn.h
+stm32h743zi-nucleo\network.o: ../AI/layers_pad_generic.h
+stm32h743zi-nucleo\network.o: ../AI/layers_rnn.h
+stm32h743zi-nucleo\network.o: ../AI/layers_sm.h
+stm32h743zi-nucleo\network.o: ../AI/layers_ml.h
+stm32h743zi-nucleo\network.o: ../AI/layers_ml_iforest.h
+stm32h743zi-nucleo\network.o: ../AI/layers_ml_svc.h
+stm32h743zi-nucleo\network.o: ../AI/layers_ml_linearclassifier.h
+stm32h743zi-nucleo\network.o: ../AI/layers_ml_treeensembleclassifier.h
+stm32h743zi-nucleo\network.o: ../AI/layers_ml_treeensembleregressor.h
+stm32h743zi-nucleo\network.o: ../AI/layers_ml_svmregressor.h
+stm32h743zi-nucleo\network.o: ../AI/layers_conv2d_dqnn.h
+stm32h743zi-nucleo\network.o: ../AI/layers_dense_dqnn.h
+stm32h743zi-nucleo\network.o: ../AI/layers_pool_dqnn.h
+stm32h743zi-nucleo\network.o: ../AI/layers_generic_dqnn.h
+stm32h743zi-nucleo\network.o: ../AI/layers_upsample_generic.h
+stm32h743zi-nucleo\network.o: ../AI/layers_upsample.h
+stm32h743zi-nucleo\network.o: ../AI/layers_resize.h
+stm32h743zi-nucleo\network.o: ../AI/layers_argminmax.h
+stm32h743zi-nucleo\network.o: ../AI/layers_wrappers.h
+stm32h743zi-nucleo\network.o: ../AI/layers_list.h
